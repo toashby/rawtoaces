@@ -35,14 +35,10 @@ ARG CERES_CMAKE
 RUN cd ~ && tar zxf "$CERES.tar.gz" && cd "$CERES" \
  && mkdir build && cd build && cmake $CERES_CMAKE .. && make -j `nproc` && make install
 
-# use a fork with corrected illuminants (#108)
-# even the fork has typos, so fix those too.
-
 ARG RAWTOACES_COMMIT
 RUN mkdir ~/rawtoaces && cd ~/rawtoaces \
  && git init && git remote add origin https://github.com/toashby/rawtoaces \
  && git fetch origin "$RAWTOACES_COMMIT" && git checkout FETCH_HEAD \
- && sed -i 's/0\.9547, 1\.0000, 1\.0883/0.95047, 1.0000, 1.08883/' lib/define.h \
  && mkdir build && cd build && cmake .. && make -j `nproc` && make install
 
 
